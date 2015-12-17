@@ -1,13 +1,10 @@
 c-----------------------------------------------------------------------
 c   
-c   2D Poiseuille flow
-c   Velocity inlet
-c   Pressure outlet
+c   Lid-driven cavity
 c
 c-----------------------------------------------------------------------
       subroutine uservp (ix,iy,iz,ieg)
       include 'SIZE'
-      include 'TOTAL'
       include 'NEKUSE'
 
       utrans = 0.0
@@ -18,7 +15,6 @@ c-----------------------------------------------------------------------
 c-----------------------------------------------------------------------
       subroutine userf  (ix,iy,iz,ieg)
       include 'SIZE'
-      include 'TOTAL'
       include 'NEKUSE'
 
       ffx = 0.0
@@ -30,33 +26,24 @@ c-----------------------------------------------------------------------
 c-----------------------------------------------------------------------
       subroutine userq  (ix,iy,iz,ieg)
       include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
+      include 'NEKUSE' ! QVOL
 
       qvol = 0.0
-      source = 0.0
 
       return
       end
 c-----------------------------------------------------------------------
       subroutine userchk
       include 'SIZE'
-      include 'TSTEP'           ! ISTEP, IOSTEP, NBDINP, TIME, DT
-      include 'SOLN'            ! VX, VY, VZ, T
-      include 'INPUT'           ! IF3D, IFTO, IFPSCO, PARAM
-      include 'CTIMER'          ! tcrsl
 
       return
       end
 c-----------------------------------------------------------------------
       subroutine userbc (ix,iy,iz,iside,ieg)
-c     NOTE ::: This subroutine MAY NOT be called by every process
-
 C     Set boundary conditions
 
       include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
+      include 'NEKUSE' ! UX, UY, UZ, TEMP, X, Y
 
 c     Smoothing function for the velocity along the lid in order to avoid a
 c     gap in the x-velocity at the corners:
@@ -97,8 +84,7 @@ c-----------------------------------------------------------------------
 C     Set initial conditions
 
       include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
+      include 'NEKUSE'          ! UX, UY, UZ, TEMP, Z
 
       ux   = 0.0
       uy   = 0.0
@@ -115,7 +101,6 @@ c-----------------------------------------------------------------------
 c-----------------------------------------------------------------------
       subroutine usrdat2
       include 'SIZE'
-      include 'TOTAL'
 c     param(66) = 4
 c     param(67) = 4
       return
